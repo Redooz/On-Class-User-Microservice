@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/onclass-user
+    username: ${DBUSER}
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8081
