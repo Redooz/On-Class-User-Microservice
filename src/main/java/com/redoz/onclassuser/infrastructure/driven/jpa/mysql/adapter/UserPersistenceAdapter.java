@@ -1,0 +1,21 @@
+package com.redoz.onclassuser.infrastructure.driven.jpa.mysql.adapter;
+
+import com.redoz.onclassuser.domain.model.User;
+import com.redoz.onclassuser.domain.spi.IUserPersistencePort;
+import com.redoz.onclassuser.infrastructure.driven.jpa.mysql.mapper.IUserEntityMapper;
+import com.redoz.onclassuser.infrastructure.driven.jpa.mysql.repository.IUserRepository;
+
+public class UserPersistenceAdapter implements IUserPersistencePort {
+    private final IUserRepository userRepository;
+    private final IUserEntityMapper userEntityMapper;
+
+    public UserPersistenceAdapter(IUserRepository userRepository, IUserEntityMapper userEntityMapper) {
+        this.userRepository = userRepository;
+        this.userEntityMapper = userEntityMapper;
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(userEntityMapper.toEntity(user));
+    }
+}
