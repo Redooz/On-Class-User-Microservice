@@ -12,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.servlet.Filter;
 import java.util.List;
 
 @Configuration
@@ -23,11 +22,9 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-
-
     @Bean
     public RequestMatcher requestMatcher() {
-        List<String> whitelist = List.of(""); // TODO: Add endpoints to whitelist
+        List<String> whitelist = List.of("/swagger-ui/index.html");
 
         return request -> whitelist.stream().anyMatch(request.getServletPath()::equals);
     }
