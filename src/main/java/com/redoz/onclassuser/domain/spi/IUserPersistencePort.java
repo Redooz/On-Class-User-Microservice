@@ -7,5 +7,7 @@ import java.util.Optional;
 public interface IUserPersistencePort {
     Optional<User> findUserByDocumentNumber(String document);
 
+    Optional<User> findUserByEmail(String email);
+
     void saveUser(User user);
 }

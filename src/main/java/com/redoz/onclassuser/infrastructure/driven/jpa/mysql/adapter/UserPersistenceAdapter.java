@@ -22,6 +22,11 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     }
 
     @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email).map(userEntityMapper::toModel);
+    }
+
+    @Override
     public void saveUser(User user) {
         userRepository.save(userEntityMapper.toEntity(user));
     }
