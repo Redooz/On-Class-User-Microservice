@@ -5,6 +5,8 @@ import com.redoz.onclassuser.domain.spi.IUserPersistencePort;
 import com.redoz.onclassuser.infrastructure.driven.jpa.mysql.mapper.IUserEntityMapper;
 import com.redoz.onclassuser.infrastructure.driven.jpa.mysql.repository.IUserRepository;
 
+import java.util.Optional;
+
 public class UserPersistenceAdapter implements IUserPersistencePort {
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
@@ -12,6 +14,11 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     public UserPersistenceAdapter(IUserRepository userRepository, IUserEntityMapper userEntityMapper) {
         this.userRepository = userRepository;
         this.userEntityMapper = userEntityMapper;
+    }
+
+    @Override
+    public Optional<User> findUserByDocumentNumber(String document) {
+        return userRepository.findById(document).map(userEntityMapper::toModel);
     }
 
     @Override
