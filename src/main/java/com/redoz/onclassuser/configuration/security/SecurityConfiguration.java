@@ -18,13 +18,15 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public RequestMatcher requestMatcher() {
-        List<String> whitelist = List.of("/swagger-ui/index.html");
+        List<String> whitelist = List.of(
+                "/swagger-ui/index.html",
+                "/auth/register/admin"
+        );
 
         return request -> whitelist.stream().anyMatch(request.getServletPath()::equals);
     }
