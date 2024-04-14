@@ -2,6 +2,7 @@ package com.redoz.onclassuser.application.dto.request;
 
 import com.redoz.onclassuser.application.constant.RequestConstants;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;

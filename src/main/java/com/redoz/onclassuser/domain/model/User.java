@@ -74,4 +74,53 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public static class Builder {
+        private String documentNumber;
+        private String name;
+        private String email;
+        private String lastName;
+        private String telephone;
+        private Role role;
+        private String password;
+
+        public Builder documentNumber(String documentNumber) {
+            this.documentNumber = documentNumber;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder telephone(String telephone) {
+            this.telephone = telephone;
+            return this;
+        }
+
+        public Builder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public User build() {
+            return new User(documentNumber, name, email, lastName, telephone, role, password);
+        }
+    }
 }
