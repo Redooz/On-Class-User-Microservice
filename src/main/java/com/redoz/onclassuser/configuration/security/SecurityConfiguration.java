@@ -25,7 +25,8 @@ public class SecurityConfiguration {
     public RequestMatcher requestMatcher() {
         List<String> whitelist = List.of(
                 "/swagger-ui/index.html",
-                "/auth/register/admin"
+                "/auth/register/admin",
+                "/auth/login"
         );
 
         return request -> whitelist.stream().anyMatch(request.getServletPath()::equals);

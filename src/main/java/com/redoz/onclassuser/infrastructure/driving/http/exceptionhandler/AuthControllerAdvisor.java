@@ -1,6 +1,7 @@
 package com.redoz.onclassuser.infrastructure.driving.http.exceptionhandler;
 
 import com.redoz.onclassuser.domain.exception.EmailAlreadyExistsException;
+import com.redoz.onclassuser.domain.exception.InvalidPasswordException;
 import com.redoz.onclassuser.domain.exception.UserAlreadyExistsException;
 import com.redoz.onclassuser.infrastructure.driving.http.constant.AuthConstants;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,15 @@ public class AuthControllerAdvisor {
                 LocalDateTime.now()
         );
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidPasswordException(InvalidPasswordException e) {
+        ExceptionResponse response = new ExceptionResponse(
+                e.getMessage(),
+                HttpStatus.UNAUTHORIZED.toString(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 }

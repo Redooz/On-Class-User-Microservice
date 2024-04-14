@@ -1,5 +1,6 @@
 package com.redoz.onclassuser.infrastructure.driving.http.controller;
 
+import com.redoz.onclassuser.application.dto.request.LoginRequest;
 import com.redoz.onclassuser.application.dto.request.RegisterUserRequest;
 import com.redoz.onclassuser.application.dto.response.AuthResponse;
 import com.redoz.onclassuser.application.handler.AuthHandler;
@@ -30,5 +31,14 @@ public class AuthRestControllerAdapter {
     })
     public ResponseEntity<AuthResponse> registerAdmin(@RequestBody @Valid RegisterUserRequest registerUserRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authHandler.registerAdmin(registerUserRequest));
+    }
+
+    @PostMapping("login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in"),
+            @ApiResponse(responseCode = "400", description = "Invalid data"),
+    })
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest registerUserRequest) {
+        return ResponseEntity.ok(authHandler.login(registerUserRequest));
     }
 }
