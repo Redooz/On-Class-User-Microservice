@@ -6,4 +6,5 @@ public class ExceptionConstants {
     }
 
     public static final String NO_DATA_FOUND_USER_EXCEPTION_MESSAGE = "'user'";
+    public static final String INVALID_PASSWORD_EXCEPTION_MESSAGE = "Invalid password";
 }
