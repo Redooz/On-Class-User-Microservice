@@ -7,3 +7,5 @@ spring:
       ddl-auto: update
 server:
   port: 8081
+jwt:
+  secret: ${SECRET_KEY}
