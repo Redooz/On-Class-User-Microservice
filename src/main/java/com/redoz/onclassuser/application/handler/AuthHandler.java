@@ -18,6 +18,10 @@ public class AuthHandler {
         return new AuthResponse(authServicePort.registerAdmin(authRequestMapper.toUserModel(request)));
     }
 
+    public AuthResponse registerTutor(RegisterUserRequest request) {
+        return new AuthResponse(authServicePort.registerTutor(authRequestMapper.toUserModel(request)));
+    }
+
     public AuthResponse login(LoginRequest request) {
         return new AuthResponse(authServicePort.login(request.getEmail(), request.getPassword()));
     }
