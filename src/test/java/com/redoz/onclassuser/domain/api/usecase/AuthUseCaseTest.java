@@ -57,6 +57,25 @@ class AuthUseCaseTest {
     }
 
     @Test
+    void shouldRegisterUserAsTutor() {
+        User user = getUser();
+        user.setPassword("password");
+        String encodedPassword = "encodedPassword";
+        String token = "token";
+
+        when(passwordEncoder.encode(user.getPassword())).thenReturn(encodedPassword);
+        when(jwtService.generateToken(any())).thenReturn(token);
+
+        String result = authUseCase.registerTutor(user);
+
+        assertEquals(token, result);
+        verify(userServicePort, times(1)).saveUser(user);
+        verify(userEntityMapper, times(1)).toEntity(user);
+        assertEquals(Role.TUTOR, user.getRole());
+        assertEquals(encodedPassword, user.getPassword());
+    }
+
+    @Test
     void shouldRegisterUser() {
         User user = getUser();
         user.setPassword("password");

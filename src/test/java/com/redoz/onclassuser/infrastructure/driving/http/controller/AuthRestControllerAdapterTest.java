@@ -52,4 +52,17 @@ class AuthRestControllerAdapterTest {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(authResponse, result.getBody());
     }
+
+    @Test
+    void shouldReturnCreatedStatusAndAuthResponseWhenTutorIsRegistered() {
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest("John", "Doe", "123456789", "123456789", "john@doe.com", "password");
+        AuthResponse authResponse = new AuthResponse("token");
+
+        when(authHandler.registerTutor(registerUserRequest)).thenReturn(authResponse);
+
+        ResponseEntity<AuthResponse> result = authRestControllerAdapter.registerTutor(registerUserRequest);
+
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
+        assertEquals(authResponse, result.getBody());
+    }
 }
