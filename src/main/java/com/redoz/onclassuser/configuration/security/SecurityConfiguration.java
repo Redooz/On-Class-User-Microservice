@@ -1,9 +1,11 @@
 package com.redoz.onclassuser.configuration.security;
 
 import com.redoz.onclassuser.configuration.security.filter.JwtAuthenticationFilter;
+import com.redoz.onclassuser.domain.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +24,7 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public RequestMatcher requestMatcher() {
+    public RequestMatcher whitelistRequestMatcher() {
         List<String> whitelist = List.of(
                 "/swagger-ui/index.html",
                 "/auth/register/admin",
@@ -35,20 +37,16 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers(requestMatcher()) // whitelist endpoints
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .authorizeRequests()
+                .requestMatchers(whitelistRequestMatcher()).permitAll() // whitelist endpoints
+                .antMatchers(HttpMethod.POST, "/auth/register/tutor").hasAnyAuthority(Role.ADMIN.name())
+                .anyRequest().authenticated()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
-
 }
