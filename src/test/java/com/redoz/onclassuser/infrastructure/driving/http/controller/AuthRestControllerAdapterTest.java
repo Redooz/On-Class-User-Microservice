@@ -1,5 +1,6 @@
 package com.redoz.onclassuser.infrastructure.driving.http.controller;
 
+import com.redoz.onclassuser.application.dto.request.LoginRequest;
 import com.redoz.onclassuser.application.dto.request.RegisterUserRequest;
 import com.redoz.onclassuser.application.dto.response.AuthResponse;
 import com.redoz.onclassuser.application.handler.AuthHandler;
@@ -36,6 +37,19 @@ class AuthRestControllerAdapterTest {
         ResponseEntity<AuthResponse> result = authRestControllerAdapter.registerAdmin(registerUserRequest);
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
+        assertEquals(authResponse, result.getBody());
+    }
+
+    @Test
+    void shouldReturnOkStatusAndAuthResponseWhenUserIsLoggedIn() {
+        LoginRequest loginRequest = new LoginRequest("john@doe.com", "password");
+        AuthResponse authResponse = new AuthResponse("token");
+
+        when(authHandler.login(loginRequest)).thenReturn(authResponse);
+
+        ResponseEntity<AuthResponse> result = authRestControllerAdapter.login(loginRequest);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(authResponse, result.getBody());
     }
 }
