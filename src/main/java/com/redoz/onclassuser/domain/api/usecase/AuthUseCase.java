@@ -3,6 +3,7 @@ package com.redoz.onclassuser.domain.api.usecase;
 import com.redoz.onclassuser.configuration.security.service.JwtService;
 import com.redoz.onclassuser.domain.api.IAuthServicePort;
 import com.redoz.onclassuser.domain.api.IUserServicePort;
+import com.redoz.onclassuser.domain.exception.InvalidPasswordException;
 import com.redoz.onclassuser.domain.model.Role;
 import com.redoz.onclassuser.domain.model.User;
 import com.redoz.onclassuser.infrastructure.driven.jpa.mysql.mapper.IUserEntityMapper;
@@ -22,16 +23,29 @@ public class AuthUseCase implements IAuthServicePort {
     }
 
     @Override
+    public String login(String email, String password) {
+        var user = userServicePort.findUserByEmail(email);
+        var isPasswordMatch = passwordEncoder.matches(password, user.getPassword());
+
+        if (!isPasswordMatch) {
+            throw new InvalidPasswordException();
+        }
+
+        return jwtService.generateToken(userEntityMapper.toEntity(user));
+    }
+
+    @Override
     public String registerAdmin(User user) {
         user.setRole(Role.ADMIN);
 
         return register(user);
     }
 
-    public String register(User user) {
+    protected String register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userServicePort.saveUser(user);
 
         return jwtService.generateToken(userEntityMapper.toEntity(user));
     }
+
 }

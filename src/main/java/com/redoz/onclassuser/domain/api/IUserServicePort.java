@@ -4,4 +4,6 @@ import com.redoz.onclassuser.domain.model.User;
 
 public interface IUserServicePort {
     void saveUser(User user);
+
+    User findUserByEmail(String email);
 }

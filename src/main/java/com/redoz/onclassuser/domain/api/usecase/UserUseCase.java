@@ -1,7 +1,9 @@
 package com.redoz.onclassuser.domain.api.usecase;
 
 import com.redoz.onclassuser.domain.api.IUserServicePort;
+import com.redoz.onclassuser.domain.constant.ExceptionConstants;
 import com.redoz.onclassuser.domain.exception.EmailAlreadyExistsException;
+import com.redoz.onclassuser.domain.exception.NoDataFoundException;
 import com.redoz.onclassuser.domain.exception.UserAlreadyExistsException;
 import com.redoz.onclassuser.domain.model.User;
 import com.redoz.onclassuser.domain.spi.IUserPersistencePort;
@@ -24,5 +26,11 @@ public class UserUseCase implements IUserServicePort {
         }
 
         userPersistencePort.saveUser(user);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userPersistencePort.findUserByEmail(email)
+                .orElseThrow(() -> new NoDataFoundException(ExceptionConstants.NO_DATA_FOUND_USER_EXCEPTION_MESSAGE));
     }
 }
