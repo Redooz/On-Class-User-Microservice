@@ -41,6 +41,13 @@ public class AuthUseCase implements IAuthServicePort {
         return register(user);
     }
 
+    @Override
+    public String registerTutor(User user) {
+        user.setRole(Role.TUTOR);
+
+        return register(user);
+    }
+
     protected String register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userServicePort.saveUser(user);
