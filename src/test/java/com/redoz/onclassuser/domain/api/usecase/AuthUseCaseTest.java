@@ -123,6 +123,25 @@ class AuthUseCaseTest {
         assertThrows(InvalidPasswordException.class, () -> authUseCase.login(email, password));
     }
 
+    @Test
+    void shouldRegisterUserAsStudent() {
+        User user = getUser();
+        user.setPassword("password");
+        String encodedPassword = "encodedPassword";
+        String token = "token";
+
+        when(passwordEncoder.encode(user.getPassword())).thenReturn(encodedPassword);
+        when(jwtService.generateToken(any())).thenReturn(token);
+
+        String result = authUseCase.registerStudent(user);
+
+        assertEquals(token, result);
+        verify(userServicePort, times(1)).saveUser(user);
+        verify(userEntityMapper, times(1)).toEntity(user);
+        assertEquals(Role.STUDENT, user.getRole());
+        assertEquals(encodedPassword, user.getPassword());
+    }
+
     User getUser() {
         return new User.Builder()
                 .documentNumber("123456789")

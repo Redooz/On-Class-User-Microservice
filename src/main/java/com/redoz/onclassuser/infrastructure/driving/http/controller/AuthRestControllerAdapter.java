@@ -50,4 +50,13 @@ public class AuthRestControllerAdapter {
     public ResponseEntity<AuthResponse> registerTutor(@RequestBody @Valid RegisterUserRequest registerUserRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authHandler.registerTutor(registerUserRequest));
     }
+
+    @PostMapping("register/student")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Student registered"),
+            @ApiResponse(responseCode = "400", description = "Invalid data"),
+    })
+    public ResponseEntity<AuthResponse> registerStudent(@RequestBody @Valid RegisterUserRequest registerUserRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authHandler.registerStudent(registerUserRequest));
+    }
 }

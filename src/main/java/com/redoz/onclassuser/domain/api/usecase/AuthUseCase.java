@@ -48,6 +48,13 @@ public class AuthUseCase implements IAuthServicePort {
         return register(user);
     }
 
+    @Override
+    public String registerStudent(User user) {
+        user.setRole(Role.STUDENT);
+
+        return register(user);
+    }
+
     protected String register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userServicePort.saveUser(user);

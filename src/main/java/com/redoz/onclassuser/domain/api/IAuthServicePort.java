@@ -8,4 +8,6 @@ public interface IAuthServicePort {
     String login(String email, String password);
 
     String registerTutor(User user);
+
+    String registerStudent(User user);
 }
