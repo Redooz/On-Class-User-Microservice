@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .requestMatchers(whitelistRequestMatcher()).permitAll() // whitelist endpoints
                 .antMatchers(HttpMethod.POST, "/auth/register/tutor").hasAnyAuthority(Role.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/auth/register/student").hasAnyAuthority(Role.ADMIN.name(), Role.TUTOR.name())
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
