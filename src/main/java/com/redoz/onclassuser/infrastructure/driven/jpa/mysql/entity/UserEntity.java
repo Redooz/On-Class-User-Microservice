@@ -1,10 +1,7 @@
 package com.redoz.onclassuser.infrastructure.driven.jpa.mysql.entity;
 
 import com.redoz.onclassuser.domain.model.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserEntity implements UserDetails {
     @Id
     private String documentNumber;

@@ -1,5 +1,6 @@
 package com.redoz.onclassuser.configuration.security.service;
 
+import com.redoz.onclassuser.domain.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -22,13 +23,22 @@ public class JwtService {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public Role getRoleFromToken(String token) {
+        return Role.valueOf(getClaimFromToken(token, claims -> claims.get("role", String.class)));
+    }
+
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(Map.of(), userDetails);
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No authority found for user"))
+                .getAuthority();
+
+        return generateToken(Map.of("role", role), userDetails);
     }
 
     public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
