@@ -12,9 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -24,21 +21,12 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public RequestMatcher whitelistRequestMatcher() {
-        List<String> whitelist = List.of(
-                "/swagger-ui/index.html",
-                "/auth/register/admin",
-                "/auth/login"
-        );
-
-        return request -> whitelist.stream().anyMatch(request.getServletPath()::equals);
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers(whitelistRequestMatcher()).permitAll() // whitelist endpoints
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/register/admin").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/register/tutor").hasAnyAuthority(Role.ADMIN.name())
                 .antMatchers(HttpMethod.POST, "/auth/register/student").hasAnyAuthority(Role.ADMIN.name(), Role.TUTOR.name())
                 .anyRequest().authenticated()

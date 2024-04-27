@@ -6,6 +6,7 @@ import com.redoz.onclassuser.application.dto.response.AuthResponse;
 import com.redoz.onclassuser.application.handler.AuthHandler;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,7 @@ public class AuthRestControllerAdapter {
     }
 
     @PostMapping("register/tutor")
+    @SecurityRequirement(name = "bearer-key")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Tutor registered"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
@@ -52,6 +54,7 @@ public class AuthRestControllerAdapter {
     }
 
     @PostMapping("register/student")
+    @SecurityRequirement(name = "bearer-key")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Student registered"),
             @ApiResponse(responseCode = "400", description = "Invalid data"),
